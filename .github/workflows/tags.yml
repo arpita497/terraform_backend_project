@@ -19,8 +19,8 @@ jobs:
       - name: calculate the next version
         id: version
         run: |
-          # Get the latest tag (default to v0.0.0 if none exists)
-          LATEST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+          # Get the latest tag
+          LATEST_TAG=$(git describe --tags --abbrev=0)
           echo "Latest tag: $LATEST_TAG"
 
           # Extract the version numbers
