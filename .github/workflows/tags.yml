@@ -1,0 +1,46 @@
+name: Add tags
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Fetch tags
+      run: git fetch --tags
+
+    - name: calculate the next version
+      id: version
+      run: |
+        # Get the latest tag (default to v0.0.0 if none exists)
+        LATEST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
+        echo "Latest tag: $LATEST_TAG"
+
+        # Extract the version numbers
+        MAJOR = $(echo "LATEST_TAG" | cut -d. -f1 | sed 's/v//')
+        MINOR = $(echo "LATEST_TAG" | cut -d. -f2)
+        PATCH = $(echo "LATEST_TAG" | cut -d. -f3)
+
+        # Increment the patch version
+        NEXT_PATCH = $ ((PATCH + 1))
+        NEXT_TAG= "v$MAJOR.$MINOR.$NEXT_PATCH"
+        echo "Next tag : $NEXT_TAG"
+
+        # Output the next tag
+        echo "tag=$NEXT_TAG" >> $GITHUB_ENV
+
+    #Create and push the new tag
+    - name: Create and push tag
+      run: |
+        git tag "$tag"
+        git push origin "$tag"
+
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
