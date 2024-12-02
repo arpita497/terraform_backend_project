@@ -16,6 +16,11 @@ jobs:
           fetch-depth: 0
           tags: true
 
+      - name: Set up Git
+        run: |
+          git config --global user.name 'Arpita Patnaik'
+          git config --global user.email 'arpita.10718326@ltimindtree.com'    
+
       - name: Fetch tags
         run: git fetch --tags
 
