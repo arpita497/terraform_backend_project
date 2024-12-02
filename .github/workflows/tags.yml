@@ -20,7 +20,7 @@ jobs:
         id: version
         run: |
           # Get the latest tag
-          LATEST_TAG=$(git describe --tags --abbrev=0)
+          LATEST_TAG=$(git describe --tags --abbrev=0 --always)
           echo "Latest tag: $LATEST_TAG"
 
           # Extract the version numbers
