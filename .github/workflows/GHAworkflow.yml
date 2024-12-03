@@ -1,6 +1,6 @@
 ---
 name: EC2-deployment
-on: 
+on:
   push:
     branches:
       -main
@@ -11,36 +11,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #Step 1: Checkout the code
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      #Step 2: Configure AWS Credentials
+      # Step 2: Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      #Step 3: Setup Terraform 
+      # Step 3: Setup Terraform 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.6
 
-      #Step 4: Initialize Terraform
+      # Step 4: Initialize Terraform
       - name: Terraform init
         run: terraform init
 
-      #Step 5: Terraform Plan
+      # Step 5: Terraform Plan
       - name: Terraform plan
         run: terraform plan -out=tfplan
 
-      #Step 4: Initialize validate
+      # Step 4: Initialize validate
       - name: Terraform validate
         run: terraform validate
 
-      #Step 4: Initialize apply
+      # Step 4: Initialize apply
       - name: Terraform apply
         run: terraform apply -auto-approve tfplan

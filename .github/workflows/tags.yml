@@ -54,15 +54,15 @@ jobs:
       - name: run Bandit Security scan
         run: |
           bandit -r . --skip B101
-        ###fail the workflow if Bandit finds critical issues
-        continue-on-error: false 
+        ### fail the workflow if Bandit finds critical issues
+        continue-on-error: false
 
       # Git Setup
       - name: Set up Git
         run: |
           git config --global user.name 'Arpita Patnaik'
           git config --global user.email 'arpita.10718326@ltimindtree.com'
-          
+
       # Fetch all tags
       - name: Fetch tags
         run: git fetch --tags
@@ -101,6 +101,6 @@ jobs:
       # YAML Lint
       - name: Install yamllint
         run: sudo apt-get install -y yamllint
-      
+
       - name: Run yamllint
         run: yamllint .
