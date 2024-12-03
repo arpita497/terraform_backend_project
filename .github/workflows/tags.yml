@@ -20,6 +20,25 @@ jobs:
           fetch-depth: 0
           tags: true
 
+      # Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: latest
+
+      # Terraform Initialization
+      - name: Initialize Terraform
+        run: terraform init
+
+      # Terraform Formatting Check
+      - name: Check Terraform Formatting
+        run: |
+          terraform fmt -recursive -check || echo "Formatting issues detected. Fix them before proceeding."
+
+      # Terraform Validation
+      - name: Validate Terraform Configuration
+        run: terraform validate
+
       # Setup the Python Environment
       - name: setup Python
         uses: actions/setup-python@v4
@@ -40,8 +59,8 @@ jobs:
       - name: Set up Git
         run: |
           git config --global user.name 'Arpita Patnaik'
-          git config --global user.email 'arpita.10718326@ltimindtree.com'    
-
+          git config --global user.email 'arpita.10718326@ltimindtree.com'   
+          
       # Fetch all tags
       - name: Fetch tags
         run: git fetch --tags
