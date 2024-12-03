@@ -1,3 +1,4 @@
+---
 name: Add tags
 
 on:
@@ -33,7 +34,7 @@ jobs:
       # Terraform Formatting Check
       - name: Check Terraform Formatting
         run: |
-          terraform fmt -recursive -check || echo "Formatting issues detected !!!"
+          terraform fmt -recursive -check
 
       # Terraform Validation
       - name: Validate Terraform Configuration
@@ -53,18 +54,18 @@ jobs:
       - name: run Bandit Security scan
         run: |
           bandit -r . --skip B101
-        continue-on-error: false #fail the workflow if Bandit finds critical issues
+        ###fail the workflow if Bandit finds critical issues
+        continue-on-error: false 
 
       # Git Setup
       - name: Set up Git
         run: |
           git config --global user.name 'Arpita Patnaik'
-          git config --global user.email 'arpita.10718326@ltimindtree.com'   
+          git config --global user.email 'arpita.10718326@ltimindtree.com'
           
       # Fetch all tags
       - name: Fetch tags
         run: git fetch --tags
-
 
       # Get the current version
       - name: Get current version
@@ -97,10 +98,9 @@ jobs:
           git tag $NEW_VERSION
           git push origin $NEW_VERSION
 
-      # YAML Lint      
+      # YAML Lint
       - name: Install yamllint
         run: sudo apt-get install -y yamllint
       
       - name: Run yamllint
         run: yamllint .
-
