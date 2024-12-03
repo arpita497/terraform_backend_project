@@ -1,7 +1,12 @@
-module "ec2_creation" {
-    source = /modules/ec2
+provider "aws" {
+  region = "us-west-1"
+}
 
-    ami           = var.ami
-    instance_type = var.instance_type
-    instance_name = var.instance_name
+resource "aws_instance" "example" {
+  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 AMI
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "example-instance"
+  }
 }
