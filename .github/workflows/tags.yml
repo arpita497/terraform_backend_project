@@ -40,7 +40,7 @@ jobs:
       - name: Validate Terraform Configuration
         run: terraform validate
 
-      # TF security analysis        
+      # TF security analysis
       - name: Run tfsec
         uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
         with:
