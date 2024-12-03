@@ -13,20 +13,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the Repository
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           tags: true
 
+      # Setup the Python Environment
+      - name: setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12.5
+
+      # Install Bandit
+      - name: Install Bandit
+        run: pip install bandit
+
+      # Run bandit check
+      - name: run Bandit Security scan
+        run: |
+          bandit -r . --skip B101
+        continue-on-error: false #fail the workflow if Bandit finds critical issues
+
+      # Git Setup
       - name: Set up Git
         run: |
           git config --global user.name 'Arpita Patnaik'
           git config --global user.email 'arpita.10718326@ltimindtree.com'    
 
+      # Fetch all tags
       - name: Fetch tags
         run: git fetch --tags
 
+
+      # Get the current version
       - name: Get current version
         id: get_version
         run: |
@@ -34,6 +55,7 @@ jobs:
           echo "Current version: $VERSION"
           echo "::set-output name=VERSION::$VERSION"
 
+      # Calculate the next version
       - name: calculate the next version
         id: increment_version
         run: |
@@ -47,7 +69,7 @@ jobs:
           echo "New version: $NEW_VERSION"
           echo "::set-output name=NEW_VERSION::$NEW_VERSION"
 
-      #Create and push the new tag
+      # Create and push the new tag
       - name: Create and push tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
