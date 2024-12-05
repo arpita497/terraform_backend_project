@@ -1,0 +1,21 @@
+---
+    name: Generate a tag and release
+    
+    on:
+      push:
+        branches:
+          - main
+    
+    permissions:
+      contents: write
+    jobs:
+        first-job:
+            runs-on: ubuntu-latest
+            steps:
+                - name: tag and release
+                  uses: avakar/tag-and-release@v1
+                  with:
+                    tag_name: v${{ github.run_number }}  
+                    release_name: Release ${{ github.run_number }}
+                  env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
